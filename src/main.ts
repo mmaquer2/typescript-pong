@@ -1,20 +1,22 @@
-import { Actor, Color, DisplayMode, Engine, Loader } from "excalibur";
-import { Player } from "./player";
-import { Resources } from "./resources";
+import {
+  Actor,
+  CollisionStartEvent,
+  CollisionType,
+  Color,
+  Engine,
+  vec,
+} from "excalibur";
+import {PlayerBlue} from "./player"
 
-class Game extends Engine {
-    constructor() {
-      super({width: 800, height: 600});
-    }
-    initialize() {
-      
-      const player = new Player();
-      this.add(player);
+const game = new Engine({
+  width: 800,
+  height: 600,
+});
 
-      const loader = new Loader([Resources.Sword]);
-      this.start(loader);
-    }
-  }
-  
-  export const game = new Game();
-  game.initialize();
+const playerBlue = new PlayerBlue();
+game.add(playerBlue);
+
+//const playerRed = new PlayerRed();
+//game.add(playerRed);
+
+game.start();

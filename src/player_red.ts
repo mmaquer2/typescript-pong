@@ -1,14 +1,13 @@
 import { Actor, Color } from "excalibur";
 
 
-export class PlayerBlue extends Actor {
+export class PlayerRed extends Actor {
   constructor() {
     super({
       
       width: 200,
       height: 20,
-      // Let's give it some color with one of the predefined
-      // color constants
+      
       color: Color.Chartreuse,
     });
   }
@@ -39,6 +38,6 @@ export class PlayerBlue extends Actor {
 
 
   onInitialize() {
-    console.log("Player Blue Initialized");
+    console.log("Player Red Initialized");
   }
 }

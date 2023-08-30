@@ -1,9 +1,18 @@
-# Excalibur TypeScript & Parcel v2 template
+# Pong with Excalibur TypeScript 
 
-## Getting Started
+## Setup and Installation
 
-1. [Generate a repository](https://github.com/excaliburjs/template-ts-parcel-v2/generate) from this template
-2. Modify the `package.json` with your own details
-3. Run `npm install` to install dependencies
-4. Run `npm start` to start the Parcel server!
-5. Have fun!
+```bash
+# Install dependencies
+npm install
+
+# Run the game
+npm run start
+
+# go to localhost:1234 in your browser of choice
+# Play the Game!
+
+```
+
+### Credits
+- This project was created by using the [Excalibur TypeScript Parcel Template](https://github.com/excaliburjs/template-ts-parcel-v2/generate) 
