@@ -1,5 +1,4 @@
-import * as ex from 'excalibur';
-
+import * as ex from "excalibur";
 
 export class PlayerRed extends ex.Actor {
   constructor() {
@@ -11,23 +10,22 @@ export class PlayerRed extends ex.Actor {
     });
   }
 
-  update(engine: ex.Engine, delta: number){
+  update(engine: ex.Engine, delta: number) {
     super.update(engine, delta);
 
-
     if (this.pos.y >= 50 && engine.input.keyboard.isHeld(ex.Input.Keys.O)) {
-        this.pos.y -= 5;
-      }
+      this.pos.y -= 5;
+    }
 
     if (this.pos.y <= 550 && engine.input.keyboard.isHeld(ex.Input.Keys.L)) {
-        this.pos.y += 5;  
+      this.pos.y += 5;
     }
   }
 
   /*
     Check if the player is out of bounds and halt movement if so
   */
- 
+
   onInitialize() {
     console.log("Player Red Initialized");
   }

@@ -1,5 +1,4 @@
-import * as ex from 'excalibur';
-
+import * as ex from "excalibur";
 
 export class PlayerBlue extends ex.Actor {
   constructor() {
@@ -11,20 +10,17 @@ export class PlayerBlue extends ex.Actor {
     });
   }
 
-  update(engine: ex.Engine, delta: number){
-
+  update(engine: ex.Engine, delta: number) {
     // console.log(this.pos.y)
     super.update(engine, delta);
 
-      if (this.pos.y >= 50 && engine.input.keyboard.isHeld(ex.Input.Keys.A)) {
-        this.pos.y -= 5;
-      }
-
-      if (this.pos.y <= 550 && engine.input.keyboard.isHeld(ex.Input.Keys.D)) {
-        this.pos.y += 5;
-      
+    if (this.pos.y >= 50 && engine.input.keyboard.isHeld(ex.Input.Keys.A)) {
+      this.pos.y -= 5;
     }
 
+    if (this.pos.y <= 550 && engine.input.keyboard.isHeld(ex.Input.Keys.D)) {
+      this.pos.y += 5;
+    }
   }
 
   onInitialize() {

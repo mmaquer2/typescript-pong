@@ -1,8 +1,6 @@
-import * as ex from 'excalibur';
-
+import * as ex from "excalibur";
 
 export class Ball extends ex.Actor {
-
   speed = 0;
   angle = 0;
 
@@ -18,7 +16,7 @@ export class Ball extends ex.Actor {
     });
   }
 
-  update(engine: ex.Engine, delta: number){
+  update(engine: ex.Engine, delta: number) {
     super.update(engine, delta);
 
     /*
@@ -27,26 +25,23 @@ export class Ball extends ex.Actor {
 
     // move ball and update position based on speed and angle
 
-
     /*
 
     check if a player has scored and reset the ball if so
 
     */
-    if(this.pos.x <= 0){
+    if (this.pos.x <= 0) {
       console.log("Player Blue Scored");
-        this.resetBallAfterScore();
-    }
-
-    if(this.pos.x >= 800){
-      console.log("Player Red Scored");
       this.resetBallAfterScore();
     }
 
+    if (this.pos.x >= 800) {
+      console.log("Player Red Scored");
+      this.resetBallAfterScore();
+    }
   }
 
-
-  resetBallAfterScore(){
+  resetBallAfterScore() {
     this.pos = this.resetLocation;
     this.speed = 0;
     this.angle = 0;
@@ -56,11 +51,10 @@ export class Ball extends ex.Actor {
   Creates a random first move for the ball at the game start
   */
 
-  firstMove(){
+  firstMove() {
     this.speed = 100;
     this.angle = 45;
   }
-
 
   onInitialize() {
     console.log("Ball Initialized");

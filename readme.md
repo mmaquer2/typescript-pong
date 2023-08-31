@@ -1,4 +1,4 @@
-# Pong with Excalibur TypeScript 
+# Pong with Excalibur TypeScript
 
 ## Setup and Installation
 
@@ -15,4 +15,5 @@ npm run start
 ```
 
 ### Credits
-- This project was created by using the [Excalibur TypeScript Parcel Template](https://github.com/excaliburjs/template-ts-parcel-v2/generate) 
+
+- This project was created by using the [Excalibur TypeScript Parcel Template](https://github.com/excaliburjs/template-ts-parcel-v2/generate)
