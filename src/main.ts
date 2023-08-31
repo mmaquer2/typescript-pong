@@ -12,4 +12,7 @@ game.add(playerBlue);
 //const playerRed = new PlayerRed();
 //game.add(playerRed);
 
+//const scoreboard = new Scoreboard();
+//game.add(scoreboard);
+
 game.start();

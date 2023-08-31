@@ -4,22 +4,25 @@ import * as ex from 'excalibur';
 export class PlayerBlue extends ex.Actor {
   constructor() {
     super({
-      pos: new ex.Vector(400, 500),
-      width: 150,
-      height: 20,
+      pos: new ex.Vector(30, 400),
+      width: 20,
+      height: 150,
       color: ex.Color.Blue,
     });
   }
 
   update(engine: ex.Engine, delta: number){
+
+    // console.log(this.pos.y)
     super.update(engine, delta);
 
-    if (engine.input.keyboard.isHeld(ex.Input.Keys.A)) {
-      this.pos.x -= 5;
-    }
+      if (this.pos.y >= 50 && engine.input.keyboard.isHeld(ex.Input.Keys.A)) {
+        this.pos.y -= 5;
+      }
 
-    if (engine.input.keyboard.isHeld(ex.Input.Keys.D)) {
-      this.pos.x += 5;
+      if (this.pos.y <= 550 && engine.input.keyboard.isHeld(ex.Input.Keys.D)) {
+        this.pos.y += 5;
+      
     }
 
   }
@@ -29,9 +32,9 @@ export class PlayerBlue extends ex.Actor {
   */
 
   isOutOfBounds() {
-       
-    return false;
 
+    return false;
+    
   }
 
 
