@@ -1,12 +1,5 @@
-import {
-  Actor,
-  CollisionStartEvent,
-  CollisionType,
-  Color,
-  Engine,
-  vec,
-} from "excalibur";
-import {PlayerBlue} from "./player"
+import { Engine } from "excalibur";
+import { PlayerBlue } from "./player_blue"
 
 const game = new Engine({
   width: 800,

@@ -1,18 +1,17 @@
-import { Actor, Color } from "excalibur";
+import * as ex from 'excalibur';
 
 
-export class PlayerRed extends Actor {
+export class PlayerRed extends ex.Actor {
   constructor() {
     super({
-      
+     
       width: 200,
       height: 20,
-      
-      color: Color.Chartreuse,
+      color: ex.Color.Red,
     });
   }
 
-  update(engine, delta){
+  update(engine: ex.Engine, delta: number){
     super.update(engine, delta);
 
     // if (engine.input.keyboard.isHeld(ex.Input.Keys.A)) {
