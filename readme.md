@@ -2,7 +2,6 @@
 
 ![Game Photo](./images/Screenshot_pong3.png)
 
-
 ## Setup and Installation
 
 ```bash
