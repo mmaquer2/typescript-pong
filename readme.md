@@ -1,4 +1,7 @@
-# Pong with Excalibur TypeScript
+# Pong with Excalibur.js in TypeScript
+
+![Game Photo](./images/Screenshot_pong3.png)
+
 
 ## Setup and Installation
 
@@ -14,6 +17,6 @@ npm run start
 
 ```
 
-### Credits
+### Credits and References
 
 - This project was created by using the [Excalibur TypeScript Parcel Template](https://github.com/excaliburjs/template-ts-parcel-v2/generate)
