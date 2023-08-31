@@ -21,7 +21,6 @@ players.forEach((player) => {
 });
 
 // Keep track of ball and score here before creating a separate class for them
-
 let blue_score = 0;
 let red_score = 0;
 let score_display = `${blue_score} : ${red_score}`;
@@ -46,7 +45,7 @@ const ball = new ex.Actor({
 });
 
 // possible starting directions for the ball negative is left and positive is right
-// same with up and down y directionwd
+// same with up and down y directions
 
 const ballSpeed = ex.vec(120, 0); // starting velocity of the ball
 
