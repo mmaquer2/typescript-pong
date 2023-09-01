@@ -20,7 +20,7 @@ players.forEach((player) => {
   player.body.collisionType = ex.CollisionType.Fixed;
 });
 
-// Keep track of ball and score here before creating a separate class for them
+// score display
 let blue_score = 0;
 let red_score = 0;
 let score_display = `${blue_score} : ${red_score}`;
@@ -47,7 +47,7 @@ const ball = new ex.Actor({
 // possible starting directions for the ball negative is left and positive is right
 // same with up and down y directions
 
-const ballSpeed = ex.vec(120, 0); // starting velocity of the ball
+const ballSpeed = randomStartVector(); // starting velocity of the ball
 
 setTimeout(() => {
   // Set the velocity in pixels per second
@@ -81,22 +81,47 @@ ball.on("exitviewport", () => {
     ball.pos = new ex.Vector(400, 300);
 
     // set the ball to a random vector
-    ball.vel = ex.vec(60, 0);
+    ball.vel = randomStartVector();
   }
 });
 
 let colliding = false;
+
 ball.on("collisionstart", function (ev: ex.CollisionStartEvent) {
   var intersection = ev.contact.mtv.normalize();
   // Only reverse direction when the collision starts
   if (!colliding) {
     colliding = true;
+
+    console.log(ev.other.pos)
+    let paddleY = ev.other.pos.y;
+
+    console.log("collision start")
+    const paddleHeight = 150;
+
+    let relativeIntersectY = (paddleY +( paddleHeight / 2 )) - intersection.y;
+
+    let normalizedRelativeIntersectionY = relativeIntersectY / (paddleHeight / 2);
+    
+    let bounceAngle = normalizedRelativeIntersectionY * Math.PI / 4;
+    console.log(bounceAngle);
+
+    ball.vel.x = ballSpeed.x * Math.cos(bounceAngle);
+    ball.vel.y = ballSpeed.y * -Math.sin(bounceAngle);
+
+    /*
     // The largest component of intersection is our axis to flip
     if (Math.abs(intersection.x) > Math.abs(intersection.y)) {
-      ball.vel.x *= -1;
+      
+      console.log("x bounce")
+      //ball.vel.x = ballSpeed.x * Math.cos(bounceAngle);
+        ball.vel.x *= -1;
     } else {
+      
+      //ball.vel.y = ballSpeed.y * -Math.sin(bounceAngle);
       ball.vel.y *= -1;
     }
+    */
   }
 });
 
@@ -109,6 +134,20 @@ ball.on("postupdate", () => {
   if (ball.pos.y < ball.height / 2) {
     ball.vel.y = ballSpeed.y;
   }
+
+  if(ball.pos.y + ball.height / 2 > game.drawHeight) {
+    ball.vel.y = -ballSpeed.y;
+  }
+
+
 });
 
 game.start();
+
+
+function randomStartVector(){
+  let x = Math.random() * 120;
+  let y = Math.random() * 120;
+  return ex.vec(x, y);
+
+}

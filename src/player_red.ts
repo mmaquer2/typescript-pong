@@ -22,10 +22,6 @@ export class PlayerRed extends ex.Actor {
     }
   }
 
-  /*
-    Check if the player is out of bounds and halt movement if so
-  */
-
   onInitialize() {
     console.log("Player Red Initialized");
   }
