@@ -47,7 +47,10 @@ const ball = new ex.Actor({
 // possible starting directions for the ball negative is left and positive is right
 // same with up and down y directions
 
-const ballSpeed = randomStartVector(); // starting velocity of the ball
+//const ballSpeed = randomStartVector(); // starting velocity of the ball
+
+const ballSpeed = ex.vec(100,0); // starting velocity of the ball
+
 
 setTimeout(() => {
   // Set the velocity in pixels per second
@@ -99,17 +102,33 @@ ball.on("collisionstart", function (ev: ex.CollisionStartEvent) {
     console.log("collision start")
     const paddleHeight = 150;
 
-    let relativeIntersectY = (paddleY +( paddleHeight / 2 )) - intersection.y;
+    // const offset = ball.pos.y - paddleY;
+    // const phi = 0.25 * Math.PI * (2 * offset - 1);
 
+    // ball.vel.x = ballSpeed.x * Math.cos(phi);
+    // ball.vel.y = ballSpeed.y * -Math.sin(phi);
+
+
+
+    // attempt #2 simple bounce and reflection 
+    let relativeIntersectY = (paddleY +( paddleHeight / 2 )) - intersection.y;
     let normalizedRelativeIntersectionY = relativeIntersectY / (paddleHeight / 2);
-    
-    let bounceAngle = normalizedRelativeIntersectionY * Math.PI / 4;
+    let bounceAngle = normalizedRelativeIntersectionY * (Math.PI / 2); // Math. PI / 4 is the max bounce angle
+
     console.log(bounceAngle);
 
     ball.vel.x = ballSpeed.x * Math.cos(bounceAngle);
-    ball.vel.y = ballSpeed.y * -Math.sin(bounceAngle);
+    ball.vel.y = ballSpeed.y * Math.sin(bounceAngle);
+    console.log("new ball velocity ", ball.vel.x, ball.vel.y)
 
+    
+  
+  
     /*
+
+    // attempt #1 simple bounce and reflection off the paddle - not working well
+
+
     // The largest component of intersection is our axis to flip
     if (Math.abs(intersection.x) > Math.abs(intersection.y)) {
       
