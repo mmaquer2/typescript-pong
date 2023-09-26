@@ -44,13 +44,7 @@ const ball = new ex.Actor({
   color: ex.Color.Black,
 });
 
-// possible starting directions for the ball negative is left and positive is right
-// same with up and down y directions
-
-//const ballSpeed = randomStartVector(); // starting velocity of the ball
-
-const ballSpeed = ex.vec(100,0); // starting velocity of the ball
-
+const ballSpeed = ex.vec(100, 100); // starting velocity of the ball
 
 setTimeout(() => {
   // Set the velocity in pixels per second
@@ -80,56 +74,29 @@ ball.on("exitviewport", () => {
     console.log("Game Over");
     alert("Game Over - Refresh to play again!");
   } else {
-    // reset the ball
+    // set the ball to the center of the screen
     ball.pos = new ex.Vector(400, 300);
 
-    // set the ball to a random vector
-    ball.vel = randomStartVector();
+    // set starting speed of the ball
+    ball.vel = ballSpeed;
+    //ball.vel = randomStartVector(); // set the ball to a random vector of the possible starting directions
   }
 });
 
 let colliding = false;
+const MAX_BOUNCE_ANGLE = Math.PI / 4; // 45 degrees in radians
+const MAX_SPIN_VELOCITY = 5; // Adjust this value based on how much spin you want
 
 ball.on("collisionstart", function (ev: ex.CollisionStartEvent) {
   var intersection = ev.contact.mtv.normalize();
-  // Only reverse direction when the collision starts
+
   if (!colliding) {
     colliding = true;
 
-    console.log(ev.other.pos)
-    let paddleY = ev.other.pos.y;
+    console.log("collision start");
 
-    console.log("collision start")
-    const paddleHeight = 150;
-
-    // const offset = ball.pos.y - paddleY;
-    // const phi = 0.25 * Math.PI * (2 * offset - 1);
-
-    // ball.vel.x = ballSpeed.x * Math.cos(phi);
-    // ball.vel.y = ballSpeed.y * -Math.sin(phi);
-
-
-
-    // attempt #2 simple bounce and reflection 
-    let relativeIntersectY = (paddleY +( paddleHeight / 2 )) - intersection.y;
-    let normalizedRelativeIntersectionY = relativeIntersectY / (paddleHeight / 2);
-    let bounceAngle = normalizedRelativeIntersectionY * (Math.PI / 2); // Math. PI / 4 is the max bounce angle
-
-    console.log(bounceAngle);
-
-    ball.vel.x = ballSpeed.x * Math.cos(bounceAngle);
-    ball.vel.y = ballSpeed.y * Math.sin(bounceAngle);
-    console.log("new ball velocity ", ball.vel.x, ball.vel.y)
-
-    
-  
-  
+    // simple bounce and reflection off the paddle:
     /*
-
-    // attempt #1 simple bounce and reflection off the paddle - not working well
-
-
-    // The largest component of intersection is our axis to flip
     if (Math.abs(intersection.x) > Math.abs(intersection.y)) {
       
       console.log("x bounce")
@@ -141,6 +108,25 @@ ball.on("collisionstart", function (ev: ex.CollisionStartEvent) {
       ball.vel.y *= -1;
     }
     */
+
+    // ===== attempt at a more realistic bounce and reflection off the paddle - not working yet =======
+
+    // Calculate the bounce angle based on where the ball hits the paddle
+    //let relativeIntersectY = paddle.pos.y + (150 / 2) - ball.pos.y;
+
+    let normalizedRelativeIntersectionY = intersection.y / (150 / 2);
+    let bounceAngle = normalizedRelativeIntersectionY * MAX_BOUNCE_ANGLE; // MAX_BOUNCE_ANGLE determines the maximum angle of reflection
+
+    // Adjust the ball's velocity based on the bounce angle
+    ball.vel.x = 5 * Math.cos(bounceAngle);
+    ball.vel.y = -5 * Math.sin(bounceAngle);
+
+    // Add spin based on where the ball hit the paddle (left or right side)
+    //let spinFactor = normalizedRelativeIntersectionY;
+    //ball.vel = MAX_SPIN_VELOCITY * spinFactor; // MAX_SPIN_VELOCITY determines the maximum spin
+
+    // Increase ball speed for added difficulty
+    //ballSpeed += SPEED_INCREASE;
   }
 });
 
@@ -150,23 +136,20 @@ ball.on("collisionend", () => {
 
 // post update event to collide with the top and bottom of the screen
 ball.on("postupdate", () => {
+  // if the ball hits the top or bottom of the screen, reverse the y velocity
   if (ball.pos.y < ball.height / 2) {
-    ball.vel.y = ballSpeed.y;
+    ball.vel.y = Math.abs(ball.vel.y);
   }
 
-  if(ball.pos.y + ball.height / 2 > game.drawHeight) {
-    ball.vel.y = -ballSpeed.y;
+  if (ball.pos.y + ball.height / 2 > game.drawHeight) {
+    ball.vel.y = -Math.abs(ball.vel.y);
   }
-
-
 });
 
 game.start();
 
-
-function randomStartVector(){
+function randomStartVector() {
   let x = Math.random() * 120;
   let y = Math.random() * 120;
   return ex.vec(x, y);
-
 }

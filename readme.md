@@ -12,6 +12,11 @@ npm install
 npm run start
 
 # go to localhost:1234 in your browser of choice
+
+# Controls:
+# Player Red: Q and A
+# Player Blue: O and L
+
 # Play the Game!
 
 ```
