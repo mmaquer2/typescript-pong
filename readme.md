@@ -2,6 +2,10 @@
 
 ![Game Photo](./images/Screenshot_pong3.png)
 
+This project is a simple pong game built with Excalibur.js in TypeScript.
+
+view live demo [here]()
+
 ## Setup and Installation
 
 ```bash

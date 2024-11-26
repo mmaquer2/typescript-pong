@@ -44,25 +44,24 @@ const ball = new ex.Actor({
   color: ex.Color.Black,
 });
 
-const ballSpeed = ex.vec(100, 100); // starting velocity of the ball
+const ballSpeed = ex.vec(200, 200); // Reduced from 400 to 200
 
 setTimeout(() => {
-  // Set the velocity in pixels per second
   ball.vel = ballSpeed;
 }, 1000);
 
-ball.body.collisionType = ex.CollisionType.Passive;
+ball.body.collisionType = ex.CollisionType.Active;
 game.add(ball);
 
 ball.on("exitviewport", () => {
   if (ball.pos.x <= 0) {
-    console.log("Player Blue Scored");
-    blue_score += 1;
+    console.log("Player Red Scored");
+    red_score += 1;
   }
 
   if (ball.pos.x >= 800) {
-    console.log("Player Red Scored");
-    red_score += 1;
+    console.log("Player Blue Scored");
+    blue_score += 1;
   }
 
   // update the score display
@@ -72,14 +71,13 @@ ball.on("exitviewport", () => {
   // check game over condition here
   if (blue_score >= 3 || red_score >= 3) {
     console.log("Game Over");
-    alert("Game Over - Refresh to play again!");
+    const winner = blue_score >= 3 ? "Blue" : "Red";
+    alert(`Game Over - ${winner} wins! Refresh to play again!`);
   } else {
     // set the ball to the center of the screen
     ball.pos = new ex.Vector(400, 300);
 
-    // set starting speed of the ball
-    ball.vel = ballSpeed;
-    //ball.vel = randomStartVector(); // set the ball to a random vector of the possible starting directions
+    ball.vel = randomStartVector(); // set the ball to a random vector of the possible starting directions
   }
 });
 
@@ -88,45 +86,39 @@ const MAX_BOUNCE_ANGLE = Math.PI / 4; // 45 degrees in radians
 const MAX_SPIN_VELOCITY = 5; // Adjust this value based on how much spin you want
 
 ball.on("collisionstart", function (ev: ex.CollisionStartEvent) {
-  var intersection = ev.contact.mtv.normalize();
-
   if (!colliding) {
     colliding = true;
-
-    console.log("collision start");
-
-    // simple bounce and reflection off the paddle:
-    /*
-    if (Math.abs(intersection.x) > Math.abs(intersection.y)) {
-      
-      console.log("x bounce")
-      //ball.vel.x = ballSpeed.x * Math.cos(bounceAngle);
-        ball.vel.x *= -1;
-    } else {
-      
-      //ball.vel.y = ballSpeed.y * -Math.sin(bounceAngle);
-      ball.vel.y *= -1;
+    
+    // Base speed - either maintain current speed or use minimum
+    const currentSpeed = ball.vel.size;
+    const baseSpeed = Math.max(currentSpeed, 200);
+    
+    const paddle = ev.other;
+    
+    // Calculate relative intersection point (-1 to 1)
+    const hitPoint = (ball.pos.y - paddle.pos.y) / (paddle.height / 2);
+    
+    // Calculate bounce angle (limit to MAX_BOUNCE_ANGLE)
+    const bounceAngle = hitPoint * MAX_BOUNCE_ANGLE;
+    
+    // Determine direction based on which paddle was hit
+    const direction = ball.pos.x < game.drawWidth / 2 ? 1 : -1;
+    
+    // Calculate new velocity components
+    const newVelX = direction * baseSpeed * Math.cos(bounceAngle);
+    const newVelY = baseSpeed * Math.sin(bounceAngle);
+    
+    // Apply new velocity
+    ball.vel = ex.vec(newVelX, newVelY);
+    
+    // Optional: Increase speed slightly with each hit
+    ball.vel = ball.vel.scale(1.1);
+    
+    // Optional: Add maximum speed cap
+    const maxSpeed = 400;
+    if (ball.vel.size > maxSpeed) {
+      ball.vel = ball.vel.normalize().scale(maxSpeed);
     }
-    */
-
-    // ===== attempt at a more realistic bounce and reflection off the paddle - not working yet =======
-
-    // Calculate the bounce angle based on where the ball hits the paddle
-    //let relativeIntersectY = paddle.pos.y + (150 / 2) - ball.pos.y;
-
-    let normalizedRelativeIntersectionY = intersection.y / (150 / 2);
-    let bounceAngle = normalizedRelativeIntersectionY * MAX_BOUNCE_ANGLE; // MAX_BOUNCE_ANGLE determines the maximum angle of reflection
-
-    // Adjust the ball's velocity based on the bounce angle
-    ball.vel.x = 5 * Math.cos(bounceAngle);
-    ball.vel.y = -5 * Math.sin(bounceAngle);
-
-    // Add spin based on where the ball hit the paddle (left or right side)
-    //let spinFactor = normalizedRelativeIntersectionY;
-    //ball.vel = MAX_SPIN_VELOCITY * spinFactor; // MAX_SPIN_VELOCITY determines the maximum spin
-
-    // Increase ball speed for added difficulty
-    //ballSpeed += SPEED_INCREASE;
   }
 });
 
@@ -149,7 +141,16 @@ ball.on("postupdate", () => {
 game.start();
 
 function randomStartVector() {
-  let x = Math.random() * 120;
-  let y = Math.random() * 120;
-  return ex.vec(x, y);
+  // Random angle between -45 and 45 degrees
+  const angle = (Math.random() - 0.5) * Math.PI / 2;
+  
+  // Random direction (left or right)
+  const direction = Math.random() < 0.5 ? -1 : 1;
+  
+  // Convert angle to velocity components
+  const speed = 200; // Initial speed
+  const vx = direction * speed * Math.cos(angle);
+  const vy = speed * Math.sin(angle);
+  
+  return ex.vec(vx, vy);
 }
