@@ -4,7 +4,7 @@
 
 This project is a simple pong game built with Excalibur.js in TypeScript.
 
-view live demo [here]()
+view live demo [here](https://typescript-pong.netlify.app/)
 
 ## Setup and Installation
 
